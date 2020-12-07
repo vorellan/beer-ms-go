@@ -14,6 +14,13 @@ func JSONResponse(w http.ResponseWriter, statusCode int, data interface{}) {
 	}
 }
 
+func routeJSON(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		next(w, r)
+	}
+}
+
 func ERROR(w http.ResponseWriter, statusCode int, err error) {
 	if err != nil {
 		JSONResponse(w, statusCode, struct {
